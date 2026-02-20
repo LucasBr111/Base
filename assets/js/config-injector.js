@@ -182,18 +182,17 @@ const ConfigInjector = (() => {
     });
   }
 
-
-  /* ──────────────────────────────────────────────────
+ /* ──────────────────────────────────────────────────
      4. NAVBAR
   ────────────────────────────────────────────────── */
   function buildNavbar() {
     const { navbar, brand } = SITE_CONFIG;
 
-    // Logo
+    // ── Logo ──
     const logo = document.querySelector('.navbar-logo');
     if (logo) logo.textContent = brand.name;
 
-    // Links
+    // ── Links desktop (navbar-nav) ──
     const navEl = document.querySelector('.navbar-nav');
     if (navEl) {
       navEl.innerHTML = navbar.links.map(link =>
@@ -201,23 +200,44 @@ const ConfigInjector = (() => {
       ).join('');
     }
 
-    // Mobile menu links
-    const mobileNav = document.querySelector('.navbar-mobile-menu');
-    if (mobileNav) {
-      mobileNav.innerHTML = navbar.links.map(link =>
-        `<a href="${link.href}" class="mobile-nav-link">${link.label}</a>`
-      ).join('') +
-      `<a href="#plans" class="btn btn-primary btn-lg">${navbar.ctaLabel}</a>`;
+    // ── Modal mobile: links ──
+    const modalLinks = document.querySelector('.navbar-modal-links');
+    if (modalLinks) {
+      modalLinks.innerHTML = navbar.links.map(link =>
+        `<a href="${link.href}" class="navbar-modal-link">${link.label}</a>`
+      ).join('');
     }
 
-    // CTA
+    // ── Modal CTA label ──
+    const modalCta = document.querySelector('.navbar-modal-cta');
+    if (modalCta) modalCta.textContent = navbar.ctaLabel;
+
+    // ── CTA desktop label ──
     const ctaEls = document.querySelectorAll('.navbar-cta');
     ctaEls.forEach(el => {
       el.textContent = navbar.ctaLabel;
-      el.href = '#plans';
     });
-  }
 
+    // ── WhatsApp links (navbar icon + modal icon) ──
+    const waUrl = `https://wa.me/${brand.whatsapp}?text=${encodeURIComponent(brand.whatsappMessage)}`;
+
+    const navbarWa = document.getElementById('navbar-wa');
+    if (navbarWa) navbarWa.href = waUrl;
+
+    const modalWa = document.getElementById('modal-wa-link');
+    if (modalWa) { modalWa.href = waUrl; modalWa.target = '_blank'; }
+
+    // ── Email link (modal) ──
+    // Buscar en brand.email si existe, sino ocultar
+    const modalEmail = document.getElementById('modal-email-link');
+    if (modalEmail) {
+      if (brand.email) {
+        modalEmail.href = `mailto:${brand.email}`;
+      } else {
+        modalEmail.style.display = 'none';
+      }
+    }
+  }
 
   /* ──────────────────────────────────────────────────
      5. HERO SLIDER
@@ -380,7 +400,6 @@ const ConfigInjector = (() => {
     const subtitleEl = document.querySelector('#plans-subtitle');
     if (titleEl) titleEl.textContent = plans.title;
     if (subtitleEl) subtitleEl.textContent = plans.subtitle;
-
     const container = document.querySelector('.plans-grid');
     if (!container) return;
 
