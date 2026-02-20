@@ -15,7 +15,7 @@ const SITE_CONFIG = {
     city:             "CIUDAD",
     neighborhood:     "BARRIO",
     country:          "PAÍS",
-    whatsapp:         "595XXXXXXXXX",
+    whatsapp:         "5950971513671",
     whatsappMessage:  "Hola! Quiero información sobre la prueba gratis.",
     address:          "DIRECCIÓN COMPLETA",
     googleMapsEmbed:  "URL_EMBED_GOOGLE_MAPS",

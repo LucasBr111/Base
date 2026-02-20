@@ -63,17 +63,27 @@
     width: 340px;
   }
 
-  /* Navbar toggle: oculto en tablet+ */
-  .navbar-toggle {
+  /* Navbar: ocultar burger en tablet+ */
+  .navbar-burger {
     display: none;
   }
 
-  /* Navbar nav: visible en tablet+ */
+  /* Navbar nav: visible en tablet+ (centrado en grid) */
   .navbar-nav {
     display: flex;
   }
 
-  /* Navbar: ocultar CTA en tablet para ganar espacio, mostrar en desktop */
+  /* WA icon visible en tablet+ */
+  .navbar-wa-icon {
+    display: flex;
+  }
+
+  /* Divisor visible en tablet+ */
+  .navbar-divider {
+    display: block;
+  }
+
+  /* CTA oculto en tablet (sin espacio), visible en desktop */
   .navbar-cta {
     display: none;
   }

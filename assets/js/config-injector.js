@@ -424,47 +424,6 @@ const ConfigInjector = (() => {
 
 
   /* ──────────────────────────────────────────────────
-     11. TESTIMONIOS
-  ────────────────────────────────────────────────── */
-  function buildTestimonials() {
-    const { testimonials } = SITE_CONFIG;
-
-    const titleEl = document.querySelector('#testimonials-title');
-    const subtitleEl = document.querySelector('#testimonials-subtitle');
-    if (titleEl) titleEl.textContent = testimonials.title;
-    if (subtitleEl) subtitleEl.textContent = testimonials.subtitle;
-
-    const track = document.querySelector('.testimonials-track');
-    if (!track) return;
-
-    track.innerHTML = testimonials.items.map((item, i) => `
-      <article class="testimonial-card ${i === 0 ? 'active' : ''}" aria-hidden="${i !== 0}">
-        <span class="testimonial-quote-icon" aria-hidden="true">"</span>
-        <div class="stars" aria-label="${item.stars} estrellas">
-          ${'★'.repeat(item.stars)}
-        </div>
-        <p class="testimonial-text">${item.text}</p>
-        <footer class="testimonial-author">
-          <img
-            class="testimonial-avatar"
-            src="${item.avatar}"
-            alt="Foto de ${item.name}"
-            loading="lazy"
-            decoding="async"
-            width="52"
-            height="52"
-          >
-          <div class="testimonial-meta">
-            <p class="testimonial-name">${item.name}, ${item.age} años</p>
-            <p class="testimonial-result">${item.result}</p>
-          </div>
-        </footer>
-      </article>
-    `).join('');
-  }
-
-
-  /* ──────────────────────────────────────────────────
      12. FAQ
   ────────────────────────────────────────────────── */
   function buildFAQ() {
@@ -652,7 +611,6 @@ const ConfigInjector = (() => {
       buildBenefits();
       buildInstallations();
       buildPlans();
-      buildTestimonials();
       buildFAQ();
       buildLocation();
       buildCTAFinal();

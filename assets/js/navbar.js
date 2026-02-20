@@ -1,152 +1,175 @@
 /**
- * navbar.js — SMART NAVBAR
+ * navbar.js — SMART NAVBAR (estilo Eón: transparent → solid)
  * ─────────────────────────────────────────────────────────────────────────────
- * - Oculta el navbar al hacer scroll hacia abajo
- * - Lo muestra al hacer scroll hacia arriba
- * - Agrega clase .scrolled para cambio de fondo al pasar de 80px
- * - Maneja el menú hamburguesa en mobile
- * - Smooth scroll a las secciones
+ * Comportamientos:
+ *  - Transparente al top, sólido con backdrop al hacer scroll
+ *  - Se oculta al scrollear hacia abajo, reaparece al subir
+ *  - Modal dropdown en mobile (slide-down animado)
+ *  - Cerrar modal al click fuera, al navegar o con Escape
+ *  - Active link por IntersectionObserver
+ *  - Smooth scroll con offset de navbar
  * ─────────────────────────────────────────────────────────────────────────────
  */
 
 const Navbar = (() => {
 
-  const SCROLL_THRESHOLD = 80;  // px desde top para agregar .scrolled
-  const HIDE_OFFSET      = 120; // px scrolleados antes de ocultar
+  /* ── Umbrales ── */
+  const SOLID_THRESHOLD = 24;   // px: a partir de aquí se vuelve sólido
+  const HIDE_OFFSET     = 100;  // px: mínimo scrolleado antes de ocultar
 
-  let navbar, toggle, mobileMenu;
-  let lastScrollY   = 0;
-  let ticking       = false;
-  let mobileOpen    = false;
+  /* ── Estado ── */
+  let navbar, burger, modal;
+  let lastScrollY = 0;
+  let ticking     = false;
+  let modalOpen   = false;
 
-  /* ─── Scroll handler ─── */
+  /* ════════════════════════════════════════════════════
+     SCROLL: transparent → solid + hide/show
+  ════════════════════════════════════════════════════ */
+
   function onScroll() {
     if (ticking) return;
-    // requestAnimationFrame: limitar a 1 update por frame (performance)
+
     window.requestAnimationFrame(() => {
-      const currentY = window.scrollY;
+      const y = window.scrollY;
 
-      // Clase .scrolled para fondo opaco
-      navbar.classList.toggle('scrolled', currentY > SCROLL_THRESHOLD);
+      /* transparent → solid */
+      navbar.classList.toggle('solid', y > SOLID_THRESHOLD);
 
-      // Hide/show: solo si scrolleamos más de HIDE_OFFSET desde top
-      if (currentY > HIDE_OFFSET) {
-        if (currentY > lastScrollY) {
-          // Bajando → ocultar
-          navbar.classList.add('hidden');
-          // Cerrar el mobile menu si estaba abierto
-          if (mobileOpen) closeMobileMenu();
-        } else {
-          // Subiendo → mostrar
-          navbar.classList.remove('hidden');
-        }
-      } else {
-        navbar.classList.remove('hidden');
+      /* hide / show */
+      if (y > HIDE_OFFSET) {
+        if (y > lastScrollY) {
+          if (modalOpen) closeModal();      // cerrar modal al ocultar navbar
+        } 
       }
 
-      lastScrollY = currentY;
+      lastScrollY = y;
       ticking     = false;
     });
 
     ticking = true;
   }
 
-  /* ─── Mobile menu ─── */
-  function openMobileMenu() {
-    mobileOpen = true;
-    mobileMenu.classList.add('open');
-    toggle.classList.add('active');
-    toggle.setAttribute('aria-expanded', 'true');
-    // Evitar scroll del body mientras el menu está abierto
+  /* ════════════════════════════════════════════════════
+     MODAL MOBILE
+  ════════════════════════════════════════════════════ */
+
+  function openModal() {
+    modalOpen = true;
+    modal.classList.add('open');
+    burger.classList.add('open');
+    burger.setAttribute('aria-expanded', 'true');
+    modal.setAttribute('aria-hidden', 'false');
     document.body.style.overflow = 'hidden';
   }
 
-  function closeMobileMenu() {
-    mobileOpen = false;
-    mobileMenu.classList.remove('open');
-    toggle.classList.remove('active');
-    toggle.setAttribute('aria-expanded', 'false');
+  function closeModal() {
+    modalOpen = false;
+    modal.classList.remove('open');
+    burger.classList.remove('open');
+    burger.setAttribute('aria-expanded', 'false');
+    modal.setAttribute('aria-hidden', 'true');
     document.body.style.overflow = '';
   }
 
-  function toggleMobileMenu() {
-    mobileOpen ? closeMobileMenu() : openMobileMenu();
+  function toggleModal() {
+    modalOpen ? closeModal() : openModal();
   }
 
-  /* ─── Smooth scroll ─── */
+  /* ════════════════════════════════════════════════════
+     SMOOTH SCROLL
+  ════════════════════════════════════════════════════ */
+
   function setupSmoothScroll() {
-    // Todos los links internos con href="#algo"
-    document.querySelectorAll('a[href^="#"]').forEach(link => {
-      link.addEventListener('click', (e) => {
-        const id = link.getAttribute('href');
-        if (id === '#' || id === '#whatsapp') return; // Casos especiales
+    document.addEventListener('click', (e) => {
+      const link = e.target.closest('a[href^="#"]');
+      if (!link) return;
 
-        const target = document.querySelector(id);
-        if (!target) return;
+      const href = link.getAttribute('href');
+      if (href === '#' || href === '#whatsapp') return;
 
-        e.preventDefault();
+      const target = document.querySelector(href);
+      if (!target) return;
 
-        // Cerrar menu mobile si está abierto
-        if (mobileOpen) closeMobileMenu();
+      e.preventDefault();
+      if (modalOpen) closeModal();
 
-        // Calcular offset por navbar fijo
-        const navH = navbar ? navbar.offsetHeight : 0;
-        const top = target.getBoundingClientRect().top + window.scrollY - navH - 12;
+      const navH = navbar ? navbar.offsetHeight : 0;
+      const top  = target.getBoundingClientRect().top + window.scrollY - navH - 8;
 
-        window.scrollTo({ top, behavior: 'smooth' });
-      });
+      window.scrollTo({ top, behavior: 'smooth' });
     });
   }
 
-  /* ─── Active link (Intersection) ─── */
+  /* ════════════════════════════════════════════════════
+     ACTIVE LINK
+  ════════════════════════════════════════════════════ */
+
   function setupActiveLinks() {
     const sections = document.querySelectorAll('section[id]');
-    const links    = document.querySelectorAll('.navbar-nav a');
+    if (!sections.length) return;
 
-    if (!sections.length || !links.length) return;
-
-    const observer = new IntersectionObserver((entries) => {
-      entries.forEach(entry => {
-        if (!entry.isIntersecting) return;
-        const id = entry.target.id;
-        links.forEach(link => {
-          link.classList.toggle('active', link.getAttribute('href') === '#' + id);
-        });
+    const markActive = (id) => {
+      document.querySelectorAll('.navbar-nav a, .navbar-modal-link').forEach(link => {
+        link.classList.toggle('active', link.getAttribute('href') === '#' + id);
       });
-    }, {
-      rootMargin: '-30% 0px -60% 0px',
-      threshold: 0
-    });
+    };
 
-    sections.forEach(section => observer.observe(section));
+    const io = new IntersectionObserver((entries) => {
+      entries.forEach(entry => {
+        if (entry.isIntersecting) markActive(entry.target.id);
+      });
+    }, { rootMargin: '-30% 0px -60% 0px', threshold: 0 });
+
+    sections.forEach(s => io.observe(s));
   }
 
-  /* ─── Init ─── */
+  /* ════════════════════════════════════════════════════
+     INIT
+  ════════════════════════════════════════════════════ */
+
   function init() {
-    navbar      = document.getElementById('navbar');
-    toggle      = document.querySelector('.navbar-toggle');
-    mobileMenu  = document.querySelector('.navbar-mobile-menu');
+    navbar = document.getElementById('navbar');
+    burger = document.querySelector('.navbar-burger');
+    modal  = document.querySelector('.navbar-modal');
 
     if (!navbar) return;
 
-    // Scroll con passive: true para performance
+    /* Aplicar estado inicial (por si la página ya está scrolleada al cargar) */
+    navbar.classList.toggle('solid', window.scrollY > SOLID_THRESHOLD);
+    lastScrollY = window.scrollY;
+
     window.addEventListener('scroll', onScroll, { passive: true });
 
-    if (toggle && mobileMenu) {
-      toggle.addEventListener('click', toggleMobileMenu);
+    /* Burger */
+    if (burger && modal) {
+      burger.addEventListener('click', (e) => { e.stopPropagation(); toggleModal(); });
 
-      // Cerrar menu al hacer click en links del menú mobile
-      mobileMenu.addEventListener('click', (e) => {
-        if (e.target.tagName === 'A') closeMobileMenu();
+      /* Cerrar al hacer click fuera del modal */
+      document.addEventListener('click', (e) => {
+        if (modalOpen && !modal.contains(e.target) && !burger.contains(e.target)) {
+          closeModal();
+        }
       });
 
-      // Cerrar con Escape
+      /* Cerrar al navegar dentro del modal */
+      modal.addEventListener('click', (e) => {
+        if (e.target.closest('a')) closeModal();
+      });
+
+      /* Escape */
       document.addEventListener('keydown', (e) => {
-        if (e.key === 'Escape' && mobileOpen) closeMobileMenu();
+        if (e.key === 'Escape' && modalOpen) closeModal();
       });
     }
 
     setupSmoothScroll();
+
+    /* Active links: espera a que el injector construya los links */
+    document.addEventListener('configInjected', () => {
+      requestAnimationFrame(setupActiveLinks);
+    });
+    /* Fallback si el DOM ya tiene links */
     setupActiveLinks();
   }
 
