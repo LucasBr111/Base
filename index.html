@@ -1,0 +1,541 @@
+<!DOCTYPE html>
+<html lang="es" dir="ltr">
+<head>
+  <!-- ════════════════════════════════════════════════
+       META BASE
+  ═══════════════════════════════════════════════════ -->
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0, viewport-fit=cover">
+  <meta http-equiv="X-UA-Compatible" content="IE=edge">
+
+  <!-- SEO dinámico — inyectado por config-injector.js -->
+  <!-- title, description, og tags, canonical, schemas -->
+
+  <!-- ════════════════════════════════════════════════
+       CSS CRÍTICO INLINE (above-the-fold)
+       Evita FOUC en las primeras secciones visibles.
+       Solo las reglas estrictamente necesarias para
+       el hero y el navbar.
+  ═══════════════════════════════════════════════════ -->
+  <style>
+    /* Prevención de FOUC y cumplimiento de CLS */
+    *,*::before,*::after{box-sizing:border-box;margin:0;padding:0}
+    html{overflow-x:hidden;-webkit-text-size-adjust:100%}
+    body{
+      background:#0A0A0A;
+      color:#F5F4F0;
+      font-family:'DM Sans',system-ui,sans-serif;
+      -webkit-font-smoothing:antialiased;
+      overflow-x:hidden;
+      min-height:100vh;
+    }
+    /* Navbar */
+    #navbar{
+      position:fixed;top:0;left:0;right:0;
+      height:68px;z-index:300;
+      background:rgba(10,10,10,.75);
+      backdrop-filter:blur(12px);
+      -webkit-backdrop-filter:blur(12px);
+      display:flex;align-items:center;
+    }
+    /* Hero mínimo para que el LCP no salte */
+    #hero{
+      position:relative;
+      min-height:100svh;
+      overflow:hidden;
+      background:#0A0A0A;
+    }
+    .hero-slider{
+      position:absolute;inset:0;
+      display:flex;
+    }
+    /* WhatsApp oculto hasta init */
+    #whatsapp-float{opacity:0;transition:opacity .4s}
+    /* Contenedor */
+    .container{width:100%;max-width:1280px;margin-inline:auto;padding-inline:1.25rem}
+  </style>
+
+  <!-- ════════════════════════════════════════════════
+       FUENTES — preconnect + display=swap
+       Solo las 2 fuentes del tema base.
+       Si se cambia el tema, actualizar aquí también.
+  ═══════════════════════════════════════════════════ -->
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <!-- Bebas Neue: solo los pesos necesarios -->
+  <!-- DM Sans: 400 y 700 para body -->
+  <link
+    rel="stylesheet"
+    href="https://fonts.googleapis.com/css2?family=Bebas+Neue&family=DM+Sans:wght@400;500;700&display=swap"
+    media="print"
+    onload="this.media='all'"
+  >
+  <!-- Fallback para navegadores sin JS -->
+  <noscript>
+    <link
+      rel="stylesheet"
+      href="https://fonts.googleapis.com/css2?family=Bebas+Neue&family=DM+Sans:wght@400;500;700&display=swap"
+    >
+  </noscript>
+
+  <!-- ════════════════════════════════════════════════
+       CSS — orden correcto para cascade
+  ═══════════════════════════════════════════════════ -->
+  <link rel="stylesheet" href="assets/css/variables.css">
+  <link rel="stylesheet" href="assets/css/base.css">
+  <link rel="stylesheet" href="assets/css/components.css">
+  <link rel="stylesheet" href="assets/css/sections.css">
+  <link rel="stylesheet" href="assets/css/responsive.css">
+
+  <!-- ════════════════════════════════════════════════
+       FAVICON (reemplazar por los del cliente)
+  ═══════════════════════════════════════════════════ -->
+  <link rel="icon" type="image/svg+xml" href="assets/img/favicon.svg">
+  <link rel="icon" type="image/png"     href="assets/img/favicon.png">
+  <link rel="apple-touch-icon"          href="assets/img/apple-touch-icon.png">
+  <meta name="theme-color" content="#0A0A0A">
+
+</head>
+
+<body>
+
+  <!-- ================================ COMPONENT: NAVBAR ================================ -->
+  <header id="navbar" role="banner" aria-label="Navegación principal">
+    <div class="navbar-inner">
+
+      <!-- Logo -->
+      <a href="#" class="navbar-logo" aria-label="Ir al inicio">
+        <!-- Texto inyectado por JS desde brand.name -->
+      </a>
+
+      <!-- Links de navegación desktop -->
+      <nav class="navbar-nav" role="navigation" aria-label="Menú principal">
+        <!-- Generado por JS desde navbar.links -->
+      </nav>
+
+      <!-- Acciones -->
+      <div class="navbar-actions">
+        <a href="#plans" class="btn btn-primary btn-sm navbar-cta" aria-label="Prueba gratis">
+          <!-- Texto inyectado por JS desde navbar.ctaLabel -->
+        </a>
+        <button
+          class="navbar-toggle"
+          aria-label="Abrir menú"
+          aria-expanded="false"
+          aria-controls="navbar-mobile"
+        >
+          <span></span>
+          <span></span>
+          <span></span>
+        </button>
+      </div>
+
+    </div>
+
+    <!-- Menú mobile -->
+    <nav id="navbar-mobile" class="navbar-mobile-menu" role="navigation" aria-label="Menú mobile">
+      <!-- Generado por JS desde navbar.links -->
+    </nav>
+  </header>
+
+  <main id="main-content">
+
+    <!-- ================================ SECTION: HERO ================================ -->
+    <section
+      id="hero"
+      role="region"
+      aria-labelledby="hero-title"
+      aria-roledescription="Carrusel de imágenes"
+    >
+
+      <!-- Slider track -->
+      <div
+        class="hero-slider"
+        aria-live="polite"
+        aria-atomic="false"
+      >
+        <!-- Slides generados por JS desde hero.slides -->
+        <!-- Cada slide tiene: imagen, overlay, eyebrow, h1, subtitle, CTAs, microcopy -->
+      </div>
+
+      <!-- Controles del slider -->
+      <div class="hero-controls" role="group" aria-label="Controles del carrusel">
+        <div class="hero-arrows">
+          <button class="carousel-arrow hero-arrow-prev" aria-label="Slide anterior">‹</button>
+          <button class="carousel-arrow hero-arrow-next" aria-label="Slide siguiente">›</button>
+        </div>
+        <div class="carousel-dots hero-dots" role="tablist" aria-label="Seleccionar slide">
+          <!-- Dots generados por JS -->
+        </div>
+      </div>
+
+    </section>
+    <!-- /HERO -->
+
+
+    <!-- ================================ SECTION: STATS ================================ -->
+    <section
+      id="stats"
+      role="region"
+      aria-labelledby="stats-title"
+    >
+      <div class="container">
+        <h2 id="stats-title" class="sr-only">Estadísticas y logros</h2>
+        <div class="stats-grid" data-reveal="stagger" data-stagger-delay="100">
+          <!-- Generado por JS desde stats[] -->
+        </div>
+      </div>
+    </section>
+    <!-- /STATS -->
+
+
+    <!-- ================================ SECTION: HOW IT WORKS ================================ -->
+    <section
+      id="how-it-works"
+      role="region"
+      aria-labelledby="how-it-works-title"
+    >
+      <div class="container">
+        <header class="section-header" data-reveal="up">
+          <h2 id="how-it-works-title"><!-- Inyectado por JS --></h2>
+          <div class="accent-line" aria-hidden="true"></div>
+          <p id="how-it-works-subtitle"><!-- Inyectado por JS --></p>
+        </header>
+
+        <div class="steps-grid">
+          <!-- Steps generados por JS desde howItWorks.steps -->
+        </div>
+      </div>
+    </section>
+    <!-- /HOW IT WORKS -->
+
+
+    <!-- ================================ SECTION: BENEFITS ================================ -->
+    <section
+      id="benefits"
+      role="region"
+      aria-labelledby="benefits-title"
+    >
+      <div class="container">
+        <header class="section-header" data-reveal="fade">
+          <h2 id="benefits-title"><!-- Inyectado por JS --></h2>
+          <div class="accent-line" aria-hidden="true"></div>
+          <p id="benefits-subtitle"><!-- Inyectado por JS --></p>
+        </header>
+
+        <div class="benefits-grid">
+          <!-- Cards generadas por JS desde benefits.items -->
+        </div>
+      </div>
+    </section>
+    <!-- /BENEFITS -->
+
+
+    <!-- ================================ SECTION: INSTALLATIONS ================================ -->
+    <section
+      id="installations"
+      role="region"
+      aria-labelledby="installations-title"
+    >
+      <div class="container">
+        <header class="section-header" data-reveal="up">
+          <h2 id="installations-title"><!-- Inyectado por JS --></h2>
+          <div class="accent-line" aria-hidden="true"></div>
+          <p id="installations-intro"><!-- Inyectado por JS --></p>
+        </header>
+      </div>
+
+      <!-- Track fuera del container para scroll horizontal full-width -->
+      <div class="container">
+        <div class="installations-track-wrapper">
+          <div
+            class="installations-track"
+            role="list"
+            aria-label="Zonas de entrenamiento"
+          >
+            <!-- Zone cards generadas por JS desde installations.zones -->
+          </div>
+        </div>
+      </div>
+
+      <div class="installations-controls" role="group" aria-label="Navegar zonas">
+        <button class="carousel-arrow installations-prev" aria-label="Zona anterior">‹</button>
+        <div class="carousel-dots installations-dots" role="tablist">
+          <!-- Dots generados por JS -->
+        </div>
+        <button class="carousel-arrow installations-next" aria-label="Zona siguiente">›</button>
+      </div>
+    </section>
+    <!-- /INSTALLATIONS -->
+
+
+    <!-- ================================ SECTION: PLANS ================================ -->
+    <section
+      id="plans"
+      role="region"
+      aria-labelledby="plans-title"
+    >
+      <div class="container">
+        <header class="section-header" data-reveal="up">
+          <h2 id="plans-title"><!-- Inyectado por JS --></h2>
+          <div class="accent-line" aria-hidden="true"></div>
+          <p id="plans-subtitle"><!-- Inyectado por JS --></p>
+        </header>
+
+        <div class="plans-grid">
+          <!-- Plan cards generadas por JS desde plans.items -->
+        </div>
+      </div>
+    </section>
+    <!-- /PLANS -->
+
+
+    <!-- ================================ SECTION: TESTIMONIALS ================================ -->
+    <section
+      id="testimonials"
+      role="region"
+      aria-labelledby="testimonials-title"
+    >
+      <div class="container">
+        <header class="section-header" data-reveal="fade">
+          <h2 id="testimonials-title"><!-- Inyectado por JS --></h2>
+          <div class="accent-line" aria-hidden="true"></div>
+          <p id="testimonials-subtitle"><!-- Inyectado por JS --></p>
+        </header>
+
+        <div class="testimonials-slider">
+          <div
+            class="testimonials-track"
+            aria-live="polite"
+            aria-atomic="true"
+          >
+            <!-- Testimonial cards generadas por JS desde testimonials.items -->
+          </div>
+        </div>
+
+        <div class="testimonials-controls" role="group" aria-label="Navegar testimonios">
+          <button class="carousel-arrow testimonials-prev" aria-label="Testimonio anterior">‹</button>
+          <div class="carousel-dots testimonials-dots" role="tablist">
+            <!-- Dots generados por JS -->
+          </div>
+          <button class="carousel-arrow testimonials-next" aria-label="Testimonio siguiente">›</button>
+        </div>
+      </div>
+    </section>
+    <!-- /TESTIMONIALS -->
+
+
+    <!-- ================================ SECTION: FAQ ================================ -->
+    <section
+      id="faq"
+      role="region"
+      aria-labelledby="faq-title"
+    >
+      <div class="container">
+        <header class="section-header" data-reveal="up">
+          <h2 id="faq-title"><!-- Inyectado por JS --></h2>
+          <div class="accent-line" aria-hidden="true"></div>
+          <p id="faq-subtitle"><!-- Inyectado por JS --></p>
+        </header>
+
+        <!-- FAQPage schema embebido por config-injector en <head> -->
+        <div class="faq-list" role="list">
+          <!-- Acordeón generado por JS desde faq.items -->
+        </div>
+      </div>
+    </section>
+    <!-- /FAQ -->
+
+
+    <!-- ================================ SECTION: LOCATION ================================ -->
+    <section
+      id="location"
+      role="region"
+      aria-labelledby="location-title"
+    >
+      <div class="container">
+        <header class="section-header" data-reveal="up">
+          <h2 id="location-title">Cómo llegar a <span data-config="brand.name"></span></h2>
+          <div class="accent-line" aria-hidden="true"></div>
+          <p>Estamos en el corazón de <span data-config="brand.neighborhood"></span>, <span data-config="brand.city"></span>.</p>
+        </header>
+
+        <div class="location-grid">
+
+          <!-- Columna info -->
+          <div class="location-info" data-reveal="left">
+
+            <div class="location-detail">
+              <span class="location-detail-icon" aria-hidden="true">📍</span>
+              <div>
+                <h4>Dirección</h4>
+                <address class="location-address"><!-- Inyectado por JS --></address>
+                <a
+                  href="#"
+                  class="location-maps-link btn btn-ghost btn-sm"
+                  target="_blank"
+                  rel="noopener noreferrer"
+                  style="margin-top:0.5rem;padding-left:0"
+                >
+                  Ver en Google Maps →
+                </a>
+              </div>
+            </div>
+
+            <div class="location-detail">
+              <span class="location-detail-icon" aria-hidden="true">🕐</span>
+              <div>
+                <h4>Horarios</h4>
+                <div class="hours-list">
+                  <!-- Generado por JS desde brand.hours -->
+                </div>
+              </div>
+            </div>
+
+            <div class="location-detail">
+              <span class="location-detail-icon" aria-hidden="true">📱</span>
+              <div>
+                <h4>WhatsApp</h4>
+                <p>Respondemos en minutos de Lunes a Sábado.</p>
+                <a
+                  href="#"
+                  id="location-whatsapp"
+                  class="btn btn-primary btn-sm"
+                  target="_blank"
+                  rel="noopener noreferrer"
+                  style="margin-top:0.75rem"
+                >
+                  💬 Escribinos ahora
+                </a>
+              </div>
+            </div>
+
+          </div>
+
+          <!-- Columna mapa -->
+          <div class="map-wrapper" data-reveal="right">
+            <!-- Iframe o placeholder inyectado por JS desde brand.googleMapsEmbed -->
+          </div>
+
+        </div>
+      </div>
+    </section>
+    <!-- /LOCATION -->
+
+
+    <!-- ================================ SECTION: CTA FINAL ================================ -->
+    <section
+      id="cta-final"
+      role="region"
+      aria-labelledby="cta-title"
+    >
+      <div class="container">
+        <div class="cta-final-inner" data-reveal="zoom">
+          <h2 id="cta-title"><!-- Inyectado por JS --></h2>
+          <div class="accent-line" aria-hidden="true"></div>
+          <p id="cta-subtitle"><!-- Inyectado por JS --></p>
+          <button
+            id="cta-btn"
+            class="btn btn-primary btn-lg btn-pulse"
+          >
+            <!-- Inyectado por JS -->
+          </button>
+          <p class="cta-social-proof" id="cta-social-proof">
+            <!-- Inyectado por JS -->
+          </p>
+        </div>
+      </div>
+    </section>
+    <!-- /CTA FINAL -->
+
+  </main>
+
+
+  <!-- ================================ FOOTER ================================ -->
+  <footer id="footer" role="contentinfo">
+    <div class="container">
+      <div class="footer-grid">
+
+        <!-- Marca -->
+        <div class="footer-brand">
+          <a href="#" class="footer-logo"><!-- Inyectado por JS --></a>
+          <p class="footer-tagline"><!-- Inyectado por JS --></p>
+          <div class="footer-social" aria-label="Redes sociales">
+            <!-- Generado por JS desde brand.social -->
+          </div>
+        </div>
+
+        <!-- Navegación -->
+        <div>
+          <p class="footer-nav-title">Secciones</p>
+          <nav class="footer-nav" aria-label="Navegación del footer">
+            <!-- Generado por JS desde footer.links -->
+          </nav>
+        </div>
+
+        <!-- Contacto (columna extra en desktop) -->
+        <div>
+          <p class="footer-nav-title">Contacto</p>
+          <nav class="footer-nav" aria-label="Contacto">
+            <a href="tel:+<span data-config="brand.whatsapp"></span>">
+              📱 <span data-config="brand.whatsapp"></span>
+            </a>
+            <a href="#location">📍 <span data-config="brand.city"></span></a>
+          </nav>
+        </div>
+
+      </div>
+
+      <div class="footer-bottom">
+        <p class="footer-copyright">
+          <!-- Generado por JS: © año brand.name + footer.legal -->
+        </p>
+        <p class="text-muted" style="font-size:0.75rem">
+          Diseñado con ❤️ para negocios locales
+        </p>
+      </div>
+    </div>
+  </footer>
+  <!-- /FOOTER -->
+
+
+  <!-- ================================ COMPONENT: WHATSAPP FLOTANTE ================================ -->
+  <div
+    id="whatsapp-float"
+    role="complementary"
+    aria-label="Contacto por WhatsApp"
+  >
+    <!-- Generado por JS desde brand.whatsapp + brand.whatsappMessage -->
+  </div>
+
+
+  <!-- ════════════════════════════════════════════════
+       SCRIPTS — defer para no bloquear render
+       ORDEN IMPORTANTE:
+       1. site-config.js  → define SITE_CONFIG (debe ir primero)
+       2. Módulos JS      → dependen de SITE_CONFIG
+       3. main.js         → entry point, llama a todos los .init()
+  ═══════════════════════════════════════════════════ -->
+  <script src="config/site-config.js" defer></script>
+  <script src="assets/js/config-injector.js" defer></script>
+  <script src="assets/js/navbar.js"          defer></script>
+  <script src="assets/js/scroll-reveal.js"   defer></script>
+  <script src="assets/js/carousel.js"        defer></script>
+  <script src="assets/js/counter.js"         defer></script>
+  <script src="assets/js/faq.js"             defer></script>
+  <script src="assets/js/whatsapp.js"        defer></script>
+  <script src="assets/js/main.js"            defer></script>
+
+  <!-- Script inline para WhatsApp location link (no depende del injector) -->
+  <script>
+    document.addEventListener('configInjected', function() {
+      var el = document.getElementById('location-whatsapp');
+      if (el && typeof SITE_CONFIG !== 'undefined') {
+        var msg = encodeURIComponent(SITE_CONFIG.brand.whatsappMessage);
+        el.href = 'https://wa.me/' + SITE_CONFIG.brand.whatsapp + '?text=' + msg;
+      }
+    });
+  </script>
+
+</body>
+</html>

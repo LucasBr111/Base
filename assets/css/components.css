@@ -1,0 +1,320 @@
+/**
+ * components.css — CARDS, BOTONES, BADGES, INPUTS
+ * ─────────────────────────────────────────────────────────────────────────────
+ * Componentes reutilizables sin contexto de sección.
+ * ─────────────────────────────────────────────────────────────────────────────
+ */
+
+/* ════════════════════════════════════════════════════
+   BOTONES
+   ════════════════════════════════════════════════════ */
+
+/* Base compartida */
+.btn {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  gap: var(--space-2);
+  padding: var(--space-4) var(--space-8);
+  font-family: var(--font-body);
+  font-size: var(--fs-base);
+  font-weight: var(--fw-bold);
+  line-height: 1;
+  letter-spacing: 0.03em;
+  border-radius: var(--border-radius);
+  border: 2px solid transparent;
+  cursor: pointer;
+  white-space: nowrap;
+  transition:
+    background-color var(--transition-speed) var(--transition-ease),
+    color            var(--transition-speed) var(--transition-ease),
+    border-color     var(--transition-speed) var(--transition-ease),
+    transform        0.15s var(--transition-ease),
+    box-shadow       var(--transition-speed) var(--transition-ease);
+  position: relative;
+  overflow: hidden;
+  /* Evitar selección de texto al hacer click rápido */
+  user-select: none;
+  -webkit-tap-highlight-color: transparent;
+}
+
+/* Ripple effect (opcional, activado por JS) */
+.btn::after {
+  content: '';
+  position: absolute;
+  inset: 0;
+  background: rgba(255,255,255,0.08);
+  opacity: 0;
+  transition: opacity 0.2s;
+  border-radius: inherit;
+}
+
+.btn:hover::after  { opacity: 1; }
+.btn:active        { transform: scale(0.97); }
+
+/* ── Variantes ─── */
+
+.btn-primary {
+  background: var(--color-accent);
+  color: #fff;
+  border-color: var(--color-accent);
+}
+
+.btn-primary:hover {
+  background: var(--color-accent-hover);
+  border-color: var(--color-accent-hover);
+  box-shadow: var(--shadow-accent);
+  color: #fff;
+}
+
+.btn-secondary {
+  background: transparent;
+  color: var(--color-text);
+  border-color: var(--color-border);
+}
+
+.btn-secondary:hover {
+  border-color: var(--color-text-muted);
+  color: var(--color-text);
+}
+
+.btn-ghost {
+  background: transparent;
+  color: var(--color-text-muted);
+  border-color: transparent;
+  padding-inline: var(--space-4);
+}
+
+.btn-ghost:hover {
+  color: var(--color-text);
+}
+
+/* ── Tamaños ─── */
+
+.btn-sm {
+  padding: var(--space-2) var(--space-5);
+  font-size: var(--fs-sm);
+}
+
+.btn-lg {
+  padding: var(--space-5) var(--space-10);
+  font-size: var(--fs-lg);
+}
+
+/* ── Pulso para CTA principal ─── */
+.btn-pulse {
+  animation: btnPulse 2.5s ease-in-out infinite;
+}
+
+@keyframes btnPulse {
+  0%, 100% { box-shadow: 0 0 0 0 rgba(212,80,10,0.5); }
+  50%       { box-shadow: 0 0 0 14px rgba(212,80,10,0); }
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .btn-pulse { animation: none; }
+}
+
+
+/* ════════════════════════════════════════════════════
+   BADGES
+   ════════════════════════════════════════════════════ */
+
+.badge {
+  display: inline-flex;
+  align-items: center;
+  padding: var(--space-1) var(--space-3);
+  font-size: var(--fs-xs);
+  font-weight: var(--fw-bold);
+  letter-spacing: 0.1em;
+  text-transform: uppercase;
+  border-radius: var(--border-radius-full);
+  line-height: 1.4;
+}
+
+.badge-accent {
+  background: var(--color-accent);
+  color: #fff;
+}
+
+.badge-muted {
+  background: var(--color-border);
+  color: var(--color-text-muted);
+}
+
+.badge-outline {
+  border: 1px solid var(--color-accent);
+  color: var(--color-accent);
+  background: transparent;
+}
+
+
+/* ════════════════════════════════════════════════════
+   CARDS
+   ════════════════════════════════════════════════════ */
+
+.card {
+  background: var(--color-card);
+  border: 1px solid var(--color-border);
+  border-radius: var(--border-radius);
+  overflow: hidden;
+  transition:
+    border-color    var(--transition-speed) var(--transition-ease),
+    transform       var(--transition-speed) var(--transition-ease),
+    box-shadow      var(--transition-speed) var(--transition-ease);
+}
+
+.card:hover {
+  border-color: rgba(212,80,10,0.4);
+  transform: translateY(-4px);
+  box-shadow: var(--shadow-lg);
+}
+
+.card-body {
+  padding: var(--space-6);
+}
+
+.card-body-lg {
+  padding: var(--space-8);
+}
+
+/* Card destacada (plan PRO) */
+.card-featured {
+  border-color: var(--color-accent);
+  box-shadow: var(--shadow-accent);
+  position: relative;
+  z-index: var(--z-above);
+  transform: scale(1.03);
+}
+
+.card-featured:hover {
+  transform: scale(1.03) translateY(-4px);
+}
+
+
+/* ════════════════════════════════════════════════════
+   LISTAS DE FEATURES (planes)
+   ════════════════════════════════════════════════════ */
+
+.feature-list {
+  display: flex;
+  flex-direction: column;
+  gap: var(--space-3);
+}
+
+.feature-list li {
+  display: flex;
+  align-items: flex-start;
+  gap: var(--space-3);
+  font-size: var(--fs-sm);
+  color: var(--color-text-muted);
+  line-height: var(--lh-snug);
+}
+
+.feature-list li::before {
+  content: '✓';
+  flex-shrink: 0;
+  width: 20px;
+  height: 20px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  background: rgba(212,80,10,0.15);
+  color: var(--color-accent);
+  border-radius: var(--border-radius-full);
+  font-size: var(--fs-xs);
+  font-weight: var(--fw-bold);
+  margin-top: 1px;
+}
+
+
+/* ════════════════════════════════════════════════════
+   STARS (testimonios)
+   ════════════════════════════════════════════════════ */
+
+.stars {
+  display: flex;
+  gap: var(--space-1);
+  color: #F59E0B;
+  font-size: var(--fs-sm);
+}
+
+
+/* ════════════════════════════════════════════════════
+   CAROUSEL CONTROLS (flechas + dots)
+   ════════════════════════════════════════════════════ */
+
+.carousel-arrow {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  width: 44px;
+  height: 44px;
+  border-radius: var(--border-radius-full);
+  background: rgba(255,255,255,0.08);
+  border: 1px solid var(--color-border);
+  color: var(--color-text);
+  font-size: var(--fs-lg);
+  cursor: pointer;
+  transition:
+    background var(--transition-speed) var(--transition-ease),
+    border-color var(--transition-speed) var(--transition-ease);
+  /* Tamaño mínimo accesible */
+  min-width: 44px;
+  min-height: 44px;
+}
+
+.carousel-arrow:hover {
+  background: var(--color-accent);
+  border-color: var(--color-accent);
+}
+
+.carousel-dots {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  gap: var(--space-2);
+}
+
+.carousel-dot {
+  width: 8px;
+  height: 8px;
+  border-radius: var(--border-radius-full);
+  background: var(--color-border);
+  cursor: pointer;
+  border: none;
+  transition:
+    background    var(--transition-speed) var(--transition-ease),
+    width         var(--transition-speed) var(--transition-ease),
+    transform     var(--transition-speed) var(--transition-ease);
+}
+
+.carousel-dot.active {
+  background: var(--color-accent);
+  width: 24px;
+}
+
+
+/* ════════════════════════════════════════════════════
+   STEP NUMBER (cómo funciona)
+   ════════════════════════════════════════════════════ */
+
+.step-number {
+  font-family: var(--font-display);
+  font-size: var(--fs-4xl);
+  color: rgba(212,80,10,0.15);
+  line-height: 1;
+  letter-spacing: -0.02em;
+  user-select: none;
+}
+
+
+/* ════════════════════════════════════════════════════
+   DIVIDER
+   ════════════════════════════════════════════════════ */
+
+.divider {
+  width: 100%;
+  height: 1px;
+  background: var(--color-border);
+}

@@ -1,0 +1,175 @@
+/**
+ * responsive.css — SOLO MEDIA QUERIES
+ * ─────────────────────────────────────────────────────────────────────────────
+ * Mobile-first: base en los otros archivos, aquí solo overrides.
+ * Breakpoints:
+ *   sm:  768px
+ *   md:  1024px
+ *   lg:  1280px
+ * ─────────────────────────────────────────────────────────────────────────────
+ */
+
+/* ── Tablet: 768px ─────────────────────────────────────────────────────────── */
+@media (min-width: 768px) {
+
+  :root {
+    --container-pad: 2rem;
+  }
+
+  /* Stats: 4 columnas */
+  .stats-grid {
+    grid-template-columns: repeat(4, 1fr);
+  }
+
+  /* Steps: 3 columnas */
+  .steps-grid {
+    grid-template-columns: repeat(3, 1fr);
+  }
+
+  /* Benefits: 2 columnas */
+  .benefits-grid {
+    grid-template-columns: repeat(2, 1fr);
+  }
+
+  /* Plans: 3 columnas */
+  .plans-grid {
+    grid-template-columns: repeat(3, 1fr);
+    align-items: start;
+  }
+
+  /* Plan PRO destacado: crece verticalmente */
+  .plan-card.featured {
+    transform: scale(1.04);
+    margin-block: -0.5rem;
+  }
+
+  .plan-card.featured:hover {
+    transform: scale(1.04) translateY(-4px);
+  }
+
+  /* Location: 2 columnas */
+  .location-grid {
+    grid-template-columns: 1fr 1fr;
+    align-items: start;
+  }
+
+  /* Footer: 3 columnas */
+  .footer-grid {
+    grid-template-columns: 2fr 1fr;
+  }
+
+  /* Zone cards: ancho fijo en tablet */
+  .zone-card {
+    width: 340px;
+  }
+
+  /* Navbar toggle: oculto en tablet+ */
+  .navbar-toggle {
+    display: none;
+  }
+
+  /* Navbar nav: visible en tablet+ */
+  .navbar-nav {
+    display: flex;
+  }
+
+  /* Navbar: ocultar CTA en tablet para ganar espacio, mostrar en desktop */
+  .navbar-cta {
+    display: none;
+  }
+
+}
+
+/* ── Desktop: 1024px ───────────────────────────────────────────────────────── */
+@media (min-width: 1024px) {
+
+  :root {
+    --container-pad:   2.5rem;
+    --section-pad-y:   6.5rem;
+  }
+
+  /* Navbar CTA visible en desktop */
+  .navbar-cta {
+    display: inline-flex;
+  }
+
+  /* Footer: 3 columnas */
+  .footer-grid {
+    grid-template-columns: 2fr 1fr 1fr;
+  }
+
+  /* Línea conectora entre pasos */
+  .steps-grid::before {
+    display: none; /* La línea vertical no aplica en horizontal; se maneja con gap */
+  }
+
+  /* Benefits: 3 columnas */
+  .benefits-grid {
+    grid-template-columns: repeat(3, 1fr);
+  }
+
+  /* Hover con efecto lateral en benefits solo en desktop (no en touch) */
+  .benefit-card:hover {
+    transform: translateX(6px);
+  }
+
+}
+
+/* ── Large: 1280px ─────────────────────────────────────────────────────────── */
+@media (min-width: 1280px) {
+
+  :root {
+    --container-pad:  3rem;
+    --section-pad-y:  8rem;
+  }
+
+  .hero-title {
+    font-size: clamp(3rem, 5vw, 5.5rem);
+  }
+
+}
+
+/* ── Preferencia de movimiento reducido ────────────────────────────────────── */
+@media (prefers-reduced-motion: reduce) {
+
+  /* Desactivar todas las transiciones y animaciones */
+  *,
+  *::before,
+  *::after {
+    animation-duration:        0.01ms !important;
+    animation-iteration-count: 1 !important;
+    transition-duration:       0.01ms !important;
+    scroll-behavior:           auto !important;
+  }
+
+  /* Mantener visibilidad de elementos que se revelan con JS */
+  [data-reveal] {
+    opacity: 1 !important;
+    transform: none !important;
+  }
+
+}
+
+/* ── Modo de impresión ─────────────────────────────────────────────────────── */
+@media print {
+
+  #navbar,
+  #whatsapp-float,
+  .hero-controls,
+  .carousel-arrow,
+  .carousel-dots,
+  .testimonials-controls,
+  .installations-controls {
+    display: none !important;
+  }
+
+  body {
+    background: #fff;
+    color: #000;
+  }
+
+  .section-pad {
+    padding-block: 2rem;
+  }
+
+}

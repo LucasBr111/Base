@@ -1,0 +1,199 @@
+/**
+ * base.css — RESET, BODY, TIPOGRAFÍA GLOBAL
+ * ─────────────────────────────────────────────────────────────────────────────
+ * Solo estilos base que aplican a todo el documento.
+ * NO incluir estilos de componentes ni secciones aquí.
+ * ─────────────────────────────────────────────────────────────────────────────
+ */
+
+/* ── Reset moderno ─────────────────────────────────────────────────────────── */
+*,
+*::before,
+*::after {
+  box-sizing: border-box;
+  margin: 0;
+  padding: 0;
+}
+
+html {
+  /* Scroll suave — desactivado si el usuario prefiere motion reducido */
+  scroll-behavior: smooth;
+  /* Previene layout shift al aparecer scrollbar */
+  overflow-x: hidden;
+  /* Mejora el antialiasing en macOS */
+  -webkit-text-size-adjust: 100%;
+}
+
+@media (prefers-reduced-motion: reduce) {
+  html {
+    scroll-behavior: auto;
+  }
+}
+
+body {
+  background-color: var(--color-bg);
+  color: var(--color-text);
+  font-family: var(--font-body);
+  font-size: var(--fs-base);
+  font-weight: var(--fw-regular);
+  line-height: var(--lh-normal);
+  min-height: 100vh;
+  overflow-x: hidden;
+  /* Antialiasing */
+  -webkit-font-smoothing: antialiased;
+  -moz-osx-font-smoothing: grayscale;
+}
+
+/* ── Tipografía base ───────────────────────────────────────────────────────── */
+h1, h2, h3, h4, h5, h6 {
+  font-family: var(--font-display);
+  font-weight: var(--fw-bold);
+  line-height: var(--lh-tight);
+  color: var(--color-text);
+  letter-spacing: 0.01em;
+}
+
+/* Hierarchy correcta: 1 H1 por página (hero), H2 por sección, H3 dentro */
+h1 { font-size: clamp(var(--fs-3xl), 7vw, var(--fs-6xl)); }
+h2 { font-size: clamp(var(--fs-2xl), 4vw, var(--fs-4xl)); }
+h3 { font-size: clamp(var(--fs-xl),  2.5vw, var(--fs-2xl)); }
+h4 { font-size: var(--fs-lg); }
+h5 { font-size: var(--fs-md); }
+h6 { font-size: var(--fs-base); }
+
+p {
+  line-height: var(--lh-loose);
+  color: var(--color-text-muted);
+  max-width: 70ch; /* Legibilidad óptima */
+}
+
+/* Párrafos dentro de secciones centradas no limitan el ancho */
+.text-center p {
+  margin-inline: auto;
+}
+
+a {
+  color: var(--color-accent);
+  text-decoration: none;
+  transition: color var(--transition-speed) var(--transition-ease);
+}
+
+a:hover {
+  color: var(--color-accent-hover);
+}
+
+/* Foco visible accesible — reemplaza el outline por defecto del navegador */
+:focus-visible {
+  outline: 2px solid var(--color-accent);
+  outline-offset: 3px;
+  border-radius: 2px;
+}
+
+/* No mostrar outline al hacer click, solo con teclado */
+:focus:not(:focus-visible) {
+  outline: none;
+}
+
+img,
+video {
+  display: block;
+  max-width: 100%;
+  height: auto;
+}
+
+ul,
+ol {
+  list-style: none;
+}
+
+button,
+input,
+textarea,
+select {
+  font-family: inherit;
+  font-size: inherit;
+}
+
+button {
+  cursor: pointer;
+  border: none;
+  background: none;
+}
+
+/* ── Utilidades de layout ──────────────────────────────────────────────────── */
+.container {
+  width: 100%;
+  max-width: var(--container-max);
+  margin-inline: auto;
+  padding-inline: var(--container-pad);
+}
+
+.section-pad {
+  padding-block: var(--section-pad-y);
+}
+
+/* ── Utilidades de texto ───────────────────────────────────────────────────── */
+.text-center  { text-align: center; }
+.text-muted   { color: var(--color-text-muted); }
+.text-accent  { color: var(--color-accent); }
+.font-display { font-family: var(--font-display); }
+
+/* ── Utilidades de visibilidad ─────────────────────────────────────────────── */
+.sr-only {
+  position: absolute;
+  width: 1px;
+  height: 1px;
+  padding: 0;
+  margin: -1px;
+  overflow: hidden;
+  clip: rect(0,0,0,0);
+  white-space: nowrap;
+  border: 0;
+}
+
+/* ── Section header (reutilizable) ─────────────────────────────────────────── */
+.section-header {
+  text-align: center;
+  margin-bottom: var(--space-16);
+}
+
+.section-header h2 {
+  margin-bottom: var(--space-4);
+}
+
+.section-header p {
+  font-size: var(--fs-lg);
+  max-width: 60ch;
+  margin-inline: auto;
+}
+
+/* ── Separador decorativo ──────────────────────────────────────────────────── */
+.accent-line {
+  width: 48px;
+  height: 3px;
+  background: var(--color-accent);
+  margin: var(--space-4) auto;
+  border-radius: var(--border-radius-full);
+}
+
+/* ── Eyebrow label ─────────────────────────────────────────────────────────── */
+.eyebrow {
+  font-family: var(--font-body);
+  font-size: var(--fs-sm);
+  font-weight: var(--fw-bold);
+  letter-spacing: 0.12em;
+  text-transform: uppercase;
+  color: var(--color-accent);
+}
+
+/* ── Selección de texto ────────────────────────────────────────────────────── */
+::selection {
+  background: var(--color-accent);
+  color: var(--color-text);
+}
+
+/* ── Scrollbar personalizada (Webkit) ──────────────────────────────────────── */
+::-webkit-scrollbar        { width: 6px; }
+::-webkit-scrollbar-track  { background: var(--color-bg-secondary); }
+::-webkit-scrollbar-thumb  { background: var(--color-border); border-radius: var(--border-radius-full); }
+::-webkit-scrollbar-thumb:hover { background: var(--color-accent); }
